@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Deteksi dan Respon Ancaman</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Sistem Deteksi dan Respon Ancaman</h1>
+    </header>
+    <main>
+        <section id="input-section">
+            <h2>Input Data Transaksi</h2>
+            <form id="transaction-form">
+                <label for="user-id">ID Pengguna:</label>
+                <input type="text" id="user-id" required>
+
+                <label for="transaction-data">Data Transaksi:</label>
+                <textarea id="transaction-data" rows="5" required></textarea>
+
+                <button type="submit">Kirim Transaksi</button>
+            </form>
+        </section>
+
+        <section id="output-section">
+            <h2>Log dan Deteksi Ancaman</h2>
+            <div id="log-output">
+                <p>Log sistem akan ditampilkan di sini...</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Sistem Keamanan Blockchain</p>
+    </footer>
+
+    <script>
+        document.getElementById('transaction-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const userId = document.getElementById('user-id').value;
+            const transactionData = document.getElementById('transaction-data').value;
+            const logOutput = document.getElementById('log-output');
+            
+            if (!userId || !transactionData) {
+                logOutput.innerHTML += '<p style="color: red;">Error: Semua field harus diisi!</p>';
+                return;
+            }
+
+            // Simulasi validasi data transaksi
+            let threatDetected = false;
+            let threatLog = '';
+
+            // Deteksi manipulasi data
+            if (transactionData.includes('tamper')) {
+                threatDetected = true;
+                threatLog = 'Ancaman Tampering terdeteksi! Data transaksi mencurigakan.';
+            }
+
+            // Deteksi kebocoran informasi
+            if (!transactionData.startsWith('https')) {
+                threatDetected = true;
+                threatLog = 'Ancaman Information Disclosure terdeteksi! Data tidak terenkripsi.';
+            }
+
+            // Deteksi Repudiation (penyangkalan transaksi)
+            if (transactionData.includes('repudiate')) {
+                threatDetected = true;
+                threatLog = 'Ancaman Repudiation terdeteksi! Kemungkinan pengguna menyangkal transaksi.';
+            }
+
+            // Deteksi Spoofing (penyalahgunaan identitas)
+            if (userId.startsWith('admin') && !userId.endsWith('@secure.com')) {
+                threatDetected = true;
+                threatLog = 'Ancaman Spoofing terdeteksi! ID pengguna mencurigakan.';
+            }
+
+            // Tambahkan log ancaman atau sukses
+            if (threatDetected) {
+                logOutput.innerHTML += `<p style="color: orange;">Peringatan: ${threatLog}</p>`;
+            } else {
+                logOutput.innerHTML += '<p style="color: green;">Data transaksi aman dan terkirim.</p>';
+            }
+
+            // Bersihkan form
+            document.getElementById('transaction-form').reset();
+        });
+    </script>
+</body>
+</html>
